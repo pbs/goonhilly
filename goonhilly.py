@@ -1,3 +1,4 @@
+from ua_parser.py.user_agent_parser import Parse
 from flask import Flask, request, abort
 
 app = Flask(__name__)
@@ -38,6 +39,16 @@ def log(source_tag):
     l = ['%s=%s' % (clean(k), clean(v)) for k, v in request.values.iteritems()]
     l.append('%s=%s' % (clean('client_id'), clean(request.environ.get('HTTP_X_FORWARDED_FOR') or request.environ.get('REMOTE_ADDR') or '-')))
     l.append('%s=%s' % (clean('source_tag'), clean(source_tag)))
+    dict = Parse(request.user_agent.string)
+    l.append('%s=%s' % (clean('ua_user_agent_family'), clean("%s" % dict['user_agent'].get('family'))))
+    l.append('%s=%s' % (clean('ua_user_agent_major'), clean("%s" % dict['user_agent'].get('major'))))
+    l.append('%s=%s' % (clean('ua_user_agent_minor'), clean("%s" % dict['user_agent'].get('minor'))))
+    l.append('%s=%s' % (clean('ua_os_family'), clean("%s" % dict['os'].get('family'))))
+    l.append('%s=%s' % (clean('ua_os_major'), clean("%s" % dict['os'].get('major'))))
+    l.append('%s=%s' % (clean('ua_os_minor'), clean("%s" % dict['os'].get('minor'))))
+    l.append('%s=%s' % (clean('ua_device_is_spider'), clean("%s" % dict['device'].get('is_spider'))))
+    l.append('%s=%s' % (clean('ua_device_is_mobile'), clean("%s" % dict['device'].get('is_mobile'))))
+    l.append('%s=%s' % (clean('ua_device_family'), clean("%s" % dict['device'].get('family'))))
     out = ' '.join(l)
     logger.info(out)
     return 'CREATED', 201
