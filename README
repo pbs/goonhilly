@@ -1,3 +1,11 @@
 goonhilly
 ---------
 A simple api service for receiving log messages.
+
+To implement advanced user-agent logging:
+
+1) visit https://github.com/tobie/ua-parser
+2) clone the ua-parser module into the same folder as goonhilly (or into the site_packages folder of your Python library)
+3) change the hyphen in the module name to an underscore (ln -s ua-parser ua_parser)
+4) create an __init__.py file in the module folder (touch ua_parser/__init__.py)
+5) Change the UA_PARSER setting in settings.py to True
